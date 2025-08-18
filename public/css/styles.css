@@ -19,3 +19,20 @@ body {
     position: absolute;
     top: 40%;
 }
+
+.form-control {
+    background-color: #E6E6E6 !important;
+}
+
+label {
+    font-family: 'poppins', sans-serif;
+    font-size: larger;
+    color: #ffffff;
+}
+
+.btn-primary {
+    background-color: #00B3E2;
+    padding: .4rem 2.5rem;
+    border-radius: 18px;
+    border-style: none;
+}
