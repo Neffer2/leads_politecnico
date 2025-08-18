@@ -15,3 +15,4 @@ use App\Http\Controllers\MainController;
 */
 
 Route::get('/', [MainController::class, 'index']);
+Route::post('/', [MainController::class, 'store'])->name('store');
