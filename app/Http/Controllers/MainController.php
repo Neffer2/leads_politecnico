@@ -22,7 +22,6 @@ class MainController extends Controller
             'lastname' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'mobilephone' => 'required|string|max:20',
-            'es_bachiller_' => 'required|string',
             'ilu_cityofresidencecolombia' => 'required|string',
             'tipo_de_documento' => 'required|string',
             'ilu_numerodocumento' => 'required|string|max:20',
@@ -59,12 +58,12 @@ class MainController extends Controller
                 "source" => "BTL-CAMPAING",
                 "browser" => "Chrome",
                 "program" => [
-                    "code" => "PGCOPME4COP",
+                    "code" => $request->program,
                     "label" => "CONTADURÍA PÚBLICA"
                 ],
                 "lastname" => $request->lastname,
                 "modality" => [
-                    "code" => "PRE",
+                    "code" => $request->modality,
                     "label" => "PRESENCIAL"
                 ],
                 "timeZone" => "",
@@ -95,7 +94,7 @@ class MainController extends Controller
                 "documentNumber" => "1000000001",
                 "doNotDisturBlaw" => "Si",
                 "opportunityType" => [
-                    "code" => "PRE",
+                    "code" => $request->ilu_opportunitytype,
                     "label" => "PREGRADO"
                 ],
                 "requiresApproval" => "Si"
@@ -112,7 +111,7 @@ class MainController extends Controller
                     "utm_content" => "organico",
                     "tipo_persona" => "1",
                     "utm_campaign" => "organico",
-                    "es_bachiller_" => $request->es_bachiller_,
+                    "es_bachiller_" => "Si",
                     "ilu_habeasdata" => true,
                     "ilu_originlead" => "OLPG-00000043",
                     "tipo_de_documento" => $request->tipo_de_documento,
@@ -124,7 +123,7 @@ class MainController extends Controller
                     "aceptacion_de_terminos_y_condiciones" => true
                 ],
                 "program" => [
-                    "productnumber" => "PGCOPME4COP"
+                    "productnumber" => $request->program
                 ],
                 "bussiness" => [
                     "dealstage" => "183090528",
@@ -135,7 +134,7 @@ class MainController extends Controller
                     "statecode" => "0",
                     "ilu_campus" => "MDE",
                     "statuscode" => "0",
-                    "ilu_program" => "PGCOPME4COP",
+                    "ilu_program" => $request->program,
                     "ilu_utmterm" => "organico",
                     "modalidad" => "PRE",
                     "ilu_utmmedium" => "organico",

@@ -7,17 +7,17 @@
 body {
     background-image: url('../assets/bg.jpg');
     background-size: cover;
-    background-position: top;
+    background-position: bottom left;
+    background-repeat: no-repeat;
 }
 
-.container {
-    height: 100vh;
-    position: relative;
+.main-container {
+    padding: 1rem;
 }
 
 .form-container {
-    position: absolute;
-    top: 44%;
+    margin-top: 2.5rem;
+    padding: 0 3% 0 24%;
 }
 
 .form-control {
@@ -27,7 +27,7 @@ body {
 label {
     font-family: 'poppins', sans-serif;
     font-size: larger;
-    color: #ffffff;
+    color: #000;
 }
 
 .btn-primary {
