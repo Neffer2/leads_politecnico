@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use App\Models\Lead;
 
 class MainController extends Controller
 {
@@ -29,6 +30,8 @@ class MainController extends Controller
             'ilu_habeasdata' => 'accepted',
             'aceptacion_de_terminos_y_condiciones' => 'accepted',
         ]);
+
+        Lead::create($request->all());
 
         $response = Http::post('https://app-poli-back.ilumno.com/api/app-cms/lead', [
             "so" => "Windows",
