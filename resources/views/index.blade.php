@@ -53,7 +53,7 @@
                         @livewire('leads.ciudades-component')
                         <div class="col-6">
                             <select name="tipo_de_documento" id="tipo_de_documento" class="form-control" required placeholder="TIPO DOCUMENTO">
-                                <option value="">Seleccionar</option>
+                                <option value="">TIPO DOCUMENTO</option>
                                 @foreach ($tipos_documento as $tipo)
                                     <option value="{{ $tipo['code'] }}">{{ $tipo['label'] }}</option>
                                 @endforeach
@@ -70,7 +70,7 @@
                         </div>
                         <div class="col-6">
                             <select name="preferred_contact_method" id="preferred_contact_method" class="form-control" required placeholder="MÉTODO DE CONTACTO PREFERIDO">
-                                <option value="">Seleccionar</option>
+                                <option value="">MÉTODO DE CONTACTO PREFERIDO</option>
                                 @foreach ($contacto_preferido as $contacto)
                                     <option value="{{ $contacto['code'] }}">{{ $contacto['label'] }}</option>
                                 @endforeach
