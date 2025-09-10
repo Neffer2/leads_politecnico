@@ -80,15 +80,10 @@
                             @enderror
                         </div>
                         <div class="col-12">
-                            <input type="checkbox" id="ilu_habeasdata" name="ilu_habeasdata" class="form-check-input" required>
-                            <label for="ilu_habeasdata">Tratamiento de datos.</label>
-                            @error('ilu_habeasdata')
-                                <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
-                        <div class="col-12">
                             <input type="checkbox" id="aceptacion_de_terminos_y_condiciones" name="aceptacion_de_terminos_y_condiciones" class="form-check-input" required>
-                            <label for="aceptacion_de_terminos_y_condiciones">Acepta términos y condiciones.</label>
+                            <label for="aceptacion_de_terminos_y_condiciones">
+                                <a href="{{ asset('politicas/Tratamiento de Datos Personales POLITECNICO GRANCOLOMBIANO - 2025.pdf') }}" target="_blank">Acepta pol&iacute;tica de datos.</a>
+                            </label>
                             @error('aceptacion_de_terminos_y_condiciones')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
