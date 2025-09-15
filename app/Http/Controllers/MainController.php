@@ -27,11 +27,21 @@ class MainController extends Controller
             'tipo_de_documento' => 'required|string',
             'ilu_numerodocumento' => 'required|string|max:20',
             'preferred_contact_method' => 'required|string',
-            'ilu_habeasdata' => 'accepted',
-            'aceptacion_de_terminos_y_condiciones' => 'accepted',
         ]);
 
         Lead::create($request->all());
+
+        if ($request->ilu_opportunitytype === 'ESPEC-POS') {
+            $label = 'ESPECIALIZACIÓN';
+        } elseif ($request->ilu_opportunitytype === 'MAEST-POS') {
+            $label = 'MAESTRÍA';
+        } elseif ($request->ilu_opportunitytype === 'PROF-PRE') {
+            $label = 'PROFESIONAL';
+        } elseif ($request->ilu_opportunitytype === 'TECNI-PRO') {
+            $label = 'TÉCNICO';
+        } elseif ($request->ilu_opportunitytype === 'TECNO-PRE') {
+            $label = 'TECNÓLOGO';
+        }
 
         $response = Http::post('https://app-poli-back.ilumno.com/api/app-cms/lead', [
             "so" => "Windows",
@@ -67,7 +77,7 @@ class MainController extends Controller
                 "lastname" => $request->lastname,
                 "modality" => [
                     "code" => $request->modality,
-                    "label" => "PRESENCIAL"
+                    "label" => ($request->modality === "PRE") ? "PRESENCIAL" : "VIRTUAL"
                 ],
                 "timeZone" => "",
                 "utm_term" => "organico",
@@ -82,8 +92,8 @@ class MainController extends Controller
                 "acceptTerms" => true,
                 "mobilephone" => '+57'.$request->mobilephone,
                 "programType" => [
-                    "code" => "PROF-PRE",
-                    "label" => "PROFESIONAL"
+                    "code" => $request->ilu_opportunitytype,
+                    "label" => $label
                 ],
                 "utm_content" => "organico",
                 "dataTypeCode" => "LEAD",
@@ -96,9 +106,10 @@ class MainController extends Controller
                 "contactChannel" => "2",
                 "documentNumber" => "1000000001",
                 "doNotDisturBlaw" => "Si",
+
                 "opportunityType" => [
                     "code" => $request->ilu_opportunitytype,
-                    "label" => "PREGRADO"
+                    "label" => $label
                 ],
                 "requiresApproval" => "Si"
             ],
@@ -116,7 +127,7 @@ class MainController extends Controller
                     "utm_campaign" => "organico",
                     "es_bachiller_" => "Si",
                     "ilu_habeasdata" => true,
-                    "ilu_originlead" => "OLPG-00000043",
+                    "ilu_originlead" => "OL-5580",
                     "tipo_de_documento" => $request->tipo_de_documento,
                     "ilu_donotdisturblaw" => "Si",
                     "ilu_numerodocumento" => $request->ilu_numerodocumento,
@@ -130,8 +141,8 @@ class MainController extends Controller
                 ],
                 "bussiness" => [
                     "dealstage" => "183090528",
-                    "ilu_opportunitytype" => "PRE",
-                    "ilu_origen_automatico" => "OLPG-00000043"
+                    "ilu_opportunitytype" => $request->ilu_opportunitytype,
+                    "ilu_origen_automatico" => " OL-5580"
                 ],
                 "bussinessDetail" => [
                     "statecode" => "0",
@@ -139,14 +150,14 @@ class MainController extends Controller
                     "statuscode" => "0",
                     "ilu_program" => $request->program,
                     "ilu_utmterm" => "organico",
-                    "modalidad" => "PRE",
+                    "modalidad" => $request->ilu_opportunitytype,
                     "ilu_utmmedium" => "organico",
                     "ilu_utmsource" => "organico",
                     "ilu_utmcontent" => "organico",
                     "ilu_programtype" => "PROF-PRE",
                     "ilu_utmcampaing" => "organico",
                     "ilu_id_formulario" => "btl-campaing-001",
-                    "ilu_origen_automatico" => "OLPG-00000043"
+                    "ilu_origen_automatico" => " OL-5580"
                 ]
             ],
             "urlReferer" => "https://poli.edu.co",
