@@ -23,95 +23,93 @@ class MainController extends Controller
             'lastname' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'mobilephone' => 'required|string|max:20',
-            'ciudad' => 'required|string',
+            'ilu_cityofresidencecolombia' => 'required|string',
             'tipo_de_documento' => 'required|string',
             'ilu_numerodocumento' => 'required|string|max:20',
-            'Tprograma' => 'required|string',
-            'programa' => 'required|string',
-            'modalidad' => 'required|string',
-            'ilu_habeasdata' => 'required|boolean',
-            'aceptacion_de_terminos_y_condiciones' => 'required|boolean',
+            'preferred_contact_method' => 'required|string',
         ]);
 
         Lead::create($request->all());
 
-        // Mapeo de códigos y labels
-        $tipos_programa = [
-            'ESPEC-POS' => ['code' => 'POS', 'label' => 'ESPECIALIZACIÓN'],
-            'MAEST-POS' => ['code' => 'POS', 'label' => 'MAESTRÍA'],
-            'PROF-PRE' => ['code' => 'PRE', 'label' => 'PROFESIONAL'],
-            'TECNI-PRO' => ['code' => 'PRE', 'label' => 'TÉCNICO'],
-            'TECNO-PRE' => ['code' => 'PRE', 'label' => 'TECNÓLOGO'],
-        ];
-        $selectedTipoPrograma = $request->Tprograma;
-        $programType = $tipos_programa[$selectedTipoPrograma] ?? ['code' => 'PRE', 'label' => 'PREGRADO'];
+        if ($request->ilu_opportunitytype === 'ESPEC-POS') {
+            $label = 'ESPECIALIZACIÓN';
+        } elseif ($request->ilu_opportunitytype === 'MAEST-POS') {
+            $label = 'MAESTRÍA';
+        } elseif ($request->ilu_opportunitytype === 'PROF-PRE') {
+            $label = 'PROFESIONAL';
+        } elseif ($request->ilu_opportunitytype === 'TECNI-PRO') {
+            $label = 'TÉCNICO';
+        } elseif ($request->ilu_opportunitytype === 'TECNO-PRE') {
+            $label = 'TECNÓLOGO';
+        }
 
-        $payload = [
+        $response = Http::post('https://app-poli-back.ilumno.com/api/app-cms/lead', [
             "so" => "Windows",
             "app" => "BTL-CAMPAING",
             "owner" => [
                 "nameOwner" => "N/A",
                 "siteCodeOwner" => "N/A",
-                "emailCandidate" => $request->email,
+                "emailCandidate" => "testbtl220720251725@ilutest.com",
                 "documentNumberOwner" => "N/A",
-                "documentNumberCandidate" => $request->ilu_numerodocumento
+                "documentNumberCandidate" => "1000000001"
             ],
             "source" => "BTL-CAMPAING",
-            "browser" => $request->header('User-Agent'),
+            "browser" => "Chrome",
             "dataCMS" => [
-                "so" => PHP_OS,
+                "so" => "Android",
                 "app" => "BTL-CAMPAING",
                 "owner" => [
                     "userName" => "N/A",
                     "userEmail" => "N/A",
                     "userDocumentNumber" => "N/A"
                 ],
-                "email" => $request->email,
+                "email" => "testbtl220720251725@ilutest.com",
                 "campus" => [
-                    "code" => $request->ciudad ?? "MDE",
-                    "label" => $request->ciudad_label ?? "MEDELLÍN"
+                    "code" => "MDE",
+                    "label" => "MEDELLÍN"
                 ],
                 "source" => "BTL-CAMPAING",
-                "browser" => $request->header('User-Agent'),
+                "browser" => "Chrome",
                 "program" => [
-                    "code" => $request->programa ?? "PGCOPME4COP",
-                    "label" => $request->programa_label ?? "CONTADURÍA PÚBLICA"
+                    "code" => $request->program,
+                    "label" => "CONTADURÍA PÚBLICA"
                 ],
                 "lastname" => $request->lastname,
                 "modality" => [
-                    "code" => $request->modalidad ?? "PRE",
-                    "label" => $request->modalidad_label ?? "PRESENCIAL"
+                    "code" => $request->modality,
+                    "label" => ($request->modality === "PRE") ? "PRESENCIAL" : "VIRTUAL"
                 ],
                 "timeZone" => "",
                 "utm_term" => "organico",
                 "appFormId" => "btl-campaing-001",
                 "firstname" => $request->firstname,
                 "appVersion" => "btl-campaing v1.0",
-                "habeasData" => $request->ilu_habeasdata,
+                "habeasData" => true,
                 "personType" => "1",
-                "urlReferer" => $request->headers->get('referer') ?? "https://poli.edu.co",
+                "urlReferer" => "https://poli.edu.co",
                 "utm_medium" => "organico",
                 "utm_source" => "organico",
-                "acceptTerms" => $request->aceptacion_de_terminos_y_condiciones,
-                "mobilephone" => $request->mobilephone,
+                "acceptTerms" => true,
+                "mobilephone" => '+57'.$request->mobilephone,
                 "programType" => [
-                    "code" => $programType['code'],
-                    "label" => $programType['label']
+                    "code" => $request->ilu_opportunitytype,
+                    "label" => $label
                 ],
                 "utm_content" => "organico",
                 "dataTypeCode" => "LEAD",
                 "documentType" => [
-                    "code" => $request->tipo_de_documento ?? "CC",
-                    "label" => $request->tipo_de_documento_label ?? "CÉDULA DE CIUDADANÍA"
+                    "code" => "CC",
+                    "label" => "CÉDULA DE CIUDADANÍA"
                 ],
                 "utm_campaign" => "organico",
-                "contactOrigin" => "OL-5580",
+                "contactOrigin" => "OLPG-00000043",
                 "contactChannel" => "2",
-                "documentNumber" => $request->ilu_numerodocumento,
+                "documentNumber" => "1000000001",
                 "doNotDisturBlaw" => "Si",
+
                 "opportunityType" => [
-                    "code" => $programType['code'],
-                    "label" => $programType['label']
+                    "code" => $request->ilu_opportunitytype,
+                    "label" => $label
                 ],
                 "requiresApproval" => "Si"
             ],
@@ -123,53 +121,52 @@ class MainController extends Controller
                     "firstname" => $request->firstname,
                     "utm_medium" => "organico",
                     "utm_source" => "organico",
-                    "mobilephone" => $request->mobilephone,
+                    "mobilephone" => '+57'.$request->mobilephone,
                     "utm_content" => "organico",
                     "tipo_persona" => "1",
                     "utm_campaign" => "organico",
                     "es_bachiller_" => "Si",
-                    "ilu_habeasdata" => $request->ilu_habeasdata,
+                    "ilu_habeasdata" => true,
                     "ilu_originlead" => "OL-5580",
-                    "tipo_de_documento" => $request->tipo_de_documento ?? "CC",
+                    "tipo_de_documento" => $request->tipo_de_documento,
                     "ilu_donotdisturblaw" => "Si",
                     "ilu_numerodocumento" => $request->ilu_numerodocumento,
                     "ilu_canal_de_captacion" => "2",
                     "preferredcontactmethodcode" => "4",
-                    "ilu_cityofresidencecolombia" => $request->ciudad ?? "CO91001",
-                    "aceptacion_de_terminos_y_condiciones" => $request->aceptacion_de_terminos_y_condiciones
+                    "ilu_cityofresidencecolombia" => $request->ilu_cityofresidencecolombia,
+                    "aceptacion_de_terminos_y_condiciones" => true
                 ],
                 "program" => [
-                    "productnumber" => $request->programa ?? "PGCOPME4COP"
+                    "productnumber" => $request->program
                 ],
                 "bussiness" => [
                     "dealstage" => "183090528",
-                    "ilu_opportunitytype" => $programType['code'],
-                    "ilu_origen_automatico" => "OL-5580"
+                    "ilu_opportunitytype" => $request->ilu_opportunitytype,
+                    "ilu_origen_automatico" => " OL-5580"
                 ],
                 "bussinessDetail" => [
                     "statecode" => "0",
-                    "ilu_campus" => $request->ciudad ?? "MDE",
+                    "ilu_campus" => "MDE",
                     "statuscode" => "0",
-                    "ilu_program" => $request->programa ?? "PGCOPME4COP",
+                    "ilu_program" => $request->program,
                     "ilu_utmterm" => "organico",
-                    "modalidad" => $request->modalidad ?? "PRE",
+                    "modalidad" => $request->ilu_opportunitytype,
                     "ilu_utmmedium" => "organico",
                     "ilu_utmsource" => "organico",
                     "ilu_utmcontent" => "organico",
-                    "ilu_programtype" => $programType['code'],
+                    "ilu_programtype" => "PROF-PRE",
                     "ilu_utmcampaing" => "organico",
                     "ilu_id_formulario" => "btl-campaing-001",
-                    "ilu_origen_automatico" => "OL-5580"
+                    "ilu_origen_automatico" => " OL-5580"
                 ]
             ],
             "urlReferer" => "https://poli.edu.co",
             "dataTypeCode" => "LEAD"
-        ];
+        ]);
 
-        $response = Http::post('https://app-poli-back.ilumno.com/api/app-cms/lead', $payload);
         $res = $response->json();
 
-        if (isset($res['success']) && $res['success']) {
+        if ($res['success']) {
             return redirect('/')->with('success', 'Lead enviado correctamente.');
         }
     }
