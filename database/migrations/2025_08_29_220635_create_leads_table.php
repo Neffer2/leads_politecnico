@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('ilu_opportunitytype');
             $table->string('modality');
             $table->string('program');
+            $table->string('sede');
             $table->string('tipo_de_documento');
             $table->string('ilu_numerodocumento');
             $table->string('preferred_contact_method');

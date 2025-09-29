@@ -36,7 +36,15 @@
             </select>
         </div>
 
-        <div class="col-12">
+        <div class="col-6">
+            <select name="sede" id="sede" wire:model.change="sede" class="form-control" placeholder="SEDE">
+                <option value="">SEDE</option>
+                @foreach ($sedes as $sede)
+                    <option value="{{ $sede['code'] }}">{{ $sede['label'] }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="col-6">
             <select name="program" id="programa" wire:model.change="programa" class="form-control" placeholder="PROGRAMA DE INTERÉS">
                 <option value="">PROGRAMA DE INTERÉS</option>
                 @foreach ($programas as $programa)

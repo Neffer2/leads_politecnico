@@ -8,17 +8,24 @@ use Illuminate\Support\Facades\Http;
 class CiudadesComponent extends Component
 {
     // Models
-    public $departamentos = [], $ciudades = [], $departamento, $Tprograma, $tipos_programa = [], $modalidad, $modalidades = [], $programa, $programas = [];
+    public $departamentos = [], $ciudades = [], $departamento, $Tprograma, $tipos_programa = [], $modalidad, $modalidades = [], $programa, $programas = [], $sedes = [], $sede;
 
     public function render()
     {
-        $this->getProgramas();
-        return view('livewire.leads.ciudades-component');
+    $this->getProgramas();
+    $this->getSedes();
+    return view('livewire.leads.ciudades-component');
     }
 
     public function mount(){
         $this->getDepartamentos();
         $this->getTiposPrograma();
+        $this->getSedes();
+    }
+
+    public function getSedes(){
+        $sedes = Http::get('https://app-poli-back.ilumno.com/api/app-cms/catalog?entityType=app-campus')->json();
+        $this->sedes = $sedes;
     }
 
     public function getDepartamentos(){

@@ -19,6 +19,7 @@ class Lead extends Model
         'ilu_opportunitytype',
         'modality',
         'program',
+        'sede',
         'tipo_de_documento',
         'ilu_numerodocumento',
         'preferred_contact_method',
